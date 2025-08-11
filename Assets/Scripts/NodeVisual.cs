@@ -6,7 +6,7 @@ namespace Portfolio.Astar.Core
     /// Visual representation of a single node in the grid.
     /// Handles color changes based on pathfinding state.
     /// </summary>
-    public class Cell : MonoBehaviour
+    public class NodeVisual : MonoBehaviour
     {
         public Node Node;
         private SpriteRenderer _spriteRenderer;

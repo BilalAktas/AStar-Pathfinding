@@ -12,7 +12,7 @@ namespace Portfolio.Astar.Core
         public Vector2Int GridPosition { get; }
         public Vector2 WorldPosition { get; }
         public bool Obstacle { get; }
-        public Cell Cell { get; }
+        public NodeVisual NodeVisual { get; }
         private Candy _candy;
         public Candy Candy
         {
@@ -25,7 +25,7 @@ namespace Portfolio.Astar.Core
         public float FCost => GCost + HCost;
         public Node parent;
         
-        public Node(bool isEmpty, Vector2Int gridPosition, Vector2 worldPosition, Cell cell, bool obstacle)
+        public Node(bool isEmpty, Vector2Int gridPosition, Vector2 worldPosition, NodeVisual nodeVisual, bool obstacle)
         {
             this.IsEmpty = isEmpty;
             this.GridPosition = gridPosition;
@@ -35,11 +35,13 @@ namespace Portfolio.Astar.Core
             this.HCost = 0;
             this.parent = null;
             
-            this.Cell = cell;
-            cell.Node = this;
+            this.NodeVisual = nodeVisual;
+            NodeVisual.Node = this;
             
             this.Obstacle = obstacle;
+            
         }
+        
     }    
 }
 

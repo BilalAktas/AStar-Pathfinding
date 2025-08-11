@@ -19,7 +19,7 @@ namespace Portfolio.Astar.Core
         public event System.Action OnMoveCompleted;
         
         /// <summary>
-        /// Moves the candy along the given path of nodes.
+        /// Moves the candy along the given path and updates its node at the end.
         /// </summary>
         /// <param name="path">List of nodes to follow.</param>
         public async Task Move(List<Node> path)
@@ -31,21 +31,10 @@ namespace Portfolio.Astar.Core
                 pathPoses.Add( Grid.Instance._Grid[_p.GridPosition.x
                     , _p.GridPosition.y].WorldPosition);
             }
+            
+            await transform.DOPath(pathPoses.ToArray(), path.Count / 5f).SetEase(Ease.Linear).AsyncWaitForCompletion();
 
-            await MoveTransform(pathPoses, path.LastOrDefault().GridPosition);
-        }
-        
-        /// <summary>
-        /// Animates the candy moving along the specified path positions.
-        /// Updates the candy's node on completion.
-        /// </summary>
-        /// <param name="path">List of world positions to move through.</param>
-        /// <param name="targetPos">Final grid position after movement.</param>
-        private async Task MoveTransform(List<Vector3> path, Vector2Int targetPos)
-        {
-            await transform.DOPath(path.ToArray(), path.Count / 5f).SetEase(Ease.Linear).AsyncWaitForCompletion();
-
-            var newNode = Grid.Instance._Grid[targetPos.x, targetPos.y];
+            var newNode = Grid.Instance._Grid[path.LastOrDefault().GridPosition.x, path.LastOrDefault().GridPosition.y];
             Node.Candy = null;
             Node = newNode;
             newNode.Candy = this;

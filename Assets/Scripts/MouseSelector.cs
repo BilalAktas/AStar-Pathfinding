@@ -31,12 +31,12 @@ namespace Portfolio.Astar.Core
                 {
                     var _pos = _cam.ScreenToWorldPoint(mousePosition);
                     var _collider = Physics2D.OverlapPoint(_pos);
-                    if (_collider && _collider.TryGetComponent(out Cell cell))
+                    if (_collider && _collider.TryGetComponent(out NodeVisual nodeVisual))
                     {
-                        if (!cell.Node.Obstacle)
+                        if (!nodeVisual.Node.Obstacle)
                         {
                             var _path = Grid.Instance.GetPath(Grid.Instance.Candy.Node.GridPosition,
-                                cell.Node.GridPosition);
+                                nodeVisual.Node.GridPosition);
                             var _poses = new HashSet<Vector2Int>();
                             foreach (var _s in _path)
                             {
@@ -47,9 +47,9 @@ namespace Portfolio.Astar.Core
                             {
                                 //Debug.Log(_currentNode.gridPosition);
                                 if (_poses.Contains(_currentNode.GridPosition))
-                                    _currentNode.Cell.InPath();
+                                    _currentNode.NodeVisual.InPath();
                                 else
-                                    _currentNode.Cell.OutPath();
+                                    _currentNode.NodeVisual.OutPath();
                             }
     
                             await Grid.Instance.Candy.Move(_path);

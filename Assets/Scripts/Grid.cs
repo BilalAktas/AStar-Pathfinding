@@ -47,9 +47,8 @@ namespace Portfolio.Astar.Core
                         clone = Instantiate(_nodePrefab);
                     else
                         clone = Instantiate(_obstaclePrefab);
-
-                    var cell = !obstacle ? clone.GetComponent<Cell>() : null;
-                    var node = new Node(true, new Vector2Int(x, y), worldPos, clone.GetComponent<Cell>(), obstacle);
+                    
+                    var node = new Node(true, new Vector2Int(x, y), worldPos, clone.GetComponent<NodeVisual>(), obstacle);
                     
                     
                     clone.transform.position = worldPos;
@@ -133,7 +132,7 @@ namespace Portfolio.Astar.Core
             var openList = new List<Node>();
             var closedList = new HashSet<Node>();
             
-            var startNode = new Node(true, startPos, Vector2Int.zero, _Grid[startPos.x, startPos.y].Cell, _Grid[startPos.x, startPos.y].Obstacle);
+            var startNode = new Node(true, startPos, Vector2Int.zero, _Grid[startPos.x, startPos.y].NodeVisual, _Grid[startPos.x, startPos.y].Obstacle);
             startNode.GCost = 0;
             startNode.HCost = ManhattanDistance(startNode.GridPosition, targetPos);
             
@@ -183,7 +182,7 @@ namespace Portfolio.Astar.Core
                     var _g = currentNode.GCost + 1;
                     if (_g < _node.GCost)
                     {
-                        var node = new Node(true, _node.GridPosition, Vector2Int.one, _node.Cell, _node.Obstacle);
+                        var node = new Node(true, _node.GridPosition, Vector2Int.one, _node.NodeVisual, _node.Obstacle);
                         node.GCost = _g;
                         node.HCost = ManhattanDistance(node.GridPosition, targetPos);
                         node.parent = currentNode;
@@ -201,7 +200,7 @@ namespace Portfolio.Astar.Core
         private void SetAllCellsDefault()
         {
             foreach (var _node in Grid.Instance._Grid)
-                _node.Cell.SetDefault();
+                _node.NodeVisual.SetDefault();
         }
     }  
     
